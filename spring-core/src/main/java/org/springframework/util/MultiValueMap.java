@@ -22,6 +22,7 @@ import java.util.Map;
 import org.jspecify.annotations.Nullable;
 
 /**
+ * 使用场景，HTTP请求头协议
  * Extension of the {@code Map} interface that stores multiple values.
  *
  * @author Arjen Poutsma

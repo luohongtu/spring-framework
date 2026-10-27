@@ -17,6 +17,14 @@
 package org.springframework.cglib;
 
 /**
+ *
+ * 空类，用于保证在生成 Javadoc 文档时会处理 {@code org.springframework.cglib} 包。
+ *
+ * <p>关于 {@code org.springframework.cglib} 的更多说明，请查看包级别的 Javadoc。
+ *
+ * @since 3.2
+ * @author Chris Beams
+ *
  * Empty class used to ensure that the {@code org.springframework.cglib}
  * package is processed during javadoc generation.
  *

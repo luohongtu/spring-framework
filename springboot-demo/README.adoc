@@ -1,0 +1,160 @@
+= Spring Boot + Spring OpenFeign 演示
+
+本项目使用 Spring Boot 4.0.0 和当前仓库中的 `spring-openfeign` 源码，
+演示纯 Spring OpenFeign 集成在 Boot 应用中的使用，不引入 Spring Cloud。
+
+== 目录与启动
+
+项目位置：`spring-framework/springboot-demo`。
+它是当前仓库的 Gradle 子项目，直接依赖 `project(":spring-openfeign")`，
+无需先安装或发布本地 Maven 制品。所有 Spring Framework 依赖均替换为当前仓库项目。
+
+使用 JDK 25，在 *spring-framework 仓库根目录* 执行：
+
+[source,bash]
+----
+./gradlew :springboot-demo:run
+----
+
+默认监听 `127.0.0.1:8080`。同一个应用既提供 `/api/**` 本地服务，
+也提供 `/demo/**` 演示入口。请求链路为：
+
+[source,text]
+----
+curl -> /demo/** -> Spring OpenFeign 代理 -> HTTP -> /api/**
+----
+
+修改监听端口时，下游 URL 会随 `server.port` 一起变化：
+
+[source,bash]
+----
+./gradlew :springboot-demo:run --args='--server.port=8090'
+----
+
+也可以设置环境变量 `DEMO_PORT`。
+通过 `DEMO_DOWNSTREAM_URL` 或 `--demo.downstream-url=http://host:port`
+可将客户端指向另一个运行相同 `/api/**` 接口的应用实例。
+
+== 演示请求
+
+以下命令均在应用启动后执行，使用默认端口。
+
+=== GET：路径参数和查询参数
+
+[source,bash]
+----
+curl 'http://127.0.0.1:8080/demo/greetings/Spring?salutation=Hello'
+----
+
+[source,json]
+----
+{"name":"Spring","message":"Hello, Spring!","clientRole":"read"}
+----
+
+`ReadInventoryClient` 使用 `@GetMapping`、`@PathVariable` 和 `@RequestParam`，
+服务端返回 JSON，由 Spring 消息转换器反序列化为 `Greeting` record。
+
+=== POST：JSON 请求与响应
+
+[source,bash]
+----
+curl -X POST 'http://127.0.0.1:8080/demo/messages' \
+  -H 'Content-Type: application/json' \
+  -d '{"message":"你好，Spring"}'
+----
+
+[source,json]
+----
+{"message":"你好，Spring","clientRole":"write"}
+----
+
+`WriteInventoryClient.send()` 使用 `@RequestBody`，
+请求与响应均由 `HttpMessageConverterCodec` 转换。
+
+=== 相同 name、不同 contextId
+
+[source,bash]
+----
+curl 'http://127.0.0.1:8080/demo/isolation'
+----
+
+响应中的 `read.clientRole` 为 `read`，`write.clientRole` 为 `write`。
+两个客户端都声明 `name = "inventory"`，但分别使用
+`contextId = "inventoryRead"` 和 `contextId = "inventoryWrite"`。
+两个配置类均定义同名的 `clientRoleInterceptor` Bean，
+各自仅向请求写入自己的 `X-Client-Role`，以验证子容器隔离。
+
+配置类放在 `org.springframework.samples.openfeign.configuration`，
+位于主应用 `org.springframework.samples.openfeign.demo` 的扫描范围之外，
+仅通过 `@FeignClient(configuration = ...)` 加载。
+不要把它们移到主应用扫描范围中，否则会注册到主容器。
+
+=== HTTP 错误处理
+
+[source,bash]
+----
+curl -i 'http://127.0.0.1:8080/demo/error'
+----
+
+下游 `/api/failure` 返回 404，Feign 抛出 `FeignException.NotFound`。
+`DemoController` 将其转换为 502 响应：
+
+[source,json]
+----
+{"message":"Downstream request failed","upstreamStatus":404}
+----
+
+JSON 字段顺序可能不同。正常请求的 `clientRole` 来自 Feign 拦截器；
+直接访问 `/api/greetings/Spring` 时，该字段为 `direct`。
+
+== 关键代码
+
+[cols="1,2",options="header"]
+|===
+|相对 src/main/java/org/springframework/samples/openfeign 的路径 |用途
+|`demo/OpenFeignDemoApplication.java` |Boot 入口，启用客户端包扫描
+|`client/ReadInventoryClient.java` |GET 请求、路径和查询参数、错误响应
+|`client/WriteInventoryClient.java` |POST JSON、独立的 contextId
+|`configuration/ReadClientConfiguration.java` |read 客户端专属拦截器
+|`configuration/WriteClientConfiguration.java` |write 客户端专属拦截器
+|`demo/web/InventoryController.java` |本地下游服务
+|`demo/web/DemoController.java` |演示入口，通过构造器注入客户端并调用
+|`model/` |请求与响应 record
+|===
+
+配置在 `src/main/resources/application.properties`。
+注解使用 `org.springframework.openfeign.*`，来自本仓库的新模块。
+
+== 自动化测试
+
+在仓库根目录执行：
+
+[source,bash]
+----
+./gradlew :springboot-demo:test
+./gradlew :springboot-demo:check
+----
+
+测试文件为：
+`src/test/java/org/springframework/samples/openfeign/tests/OpenFeignDemoTests.java`。
+
+测试会自动启动两个真实的 Boot HTTP 服务，都使用操作系统分配的随机端口：
+先启动下游 Controller，再启动完整 demo 并将客户端 URL 指向下游。
+这样无需手工启动应用，也不依赖 8080 端口。
+由于 Feign URL 在客户端注册时解析，测试先确定下游端口，
+避免使用尚未产生的 `local.server.port`。
+
+覆盖以下行为：
+
+* GET 路径参数、包含空格的查询参数。
+* 中文 JSON 请求与 record 响应转换。
+* 相同服务名、不同 contextId 的拦截器配置隔离。
+* 客户端配置不泄漏到主应用容器。
+* 下游 404 转为 Feign 异常。
+* 演示接口将下游错误转为 502。
+
+测试结束时关闭两个服务，并验证命名子容器已关闭。
+`check` 还会执行本仓库的 Checkstyle 和架构检查。
+
+本 demo 运行在当前仓库的 Framework 7.1 开发版本上，
+不代表 Spring Boot 4.0.0 对该开发版本的官方兼容承诺。

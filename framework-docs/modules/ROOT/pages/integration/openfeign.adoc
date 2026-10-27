@@ -1,0 +1,90 @@
+[[openfeign]]
+= OpenFeign Clients
+
+The `spring-openfeign` module integrates native OpenFeign with Spring application
+contexts. It requires neither Spring Boot nor Spring Cloud. Add the module and
+use `@EnableFeignClients` on a configuration class to scan for `@FeignClient`
+interfaces. Its `clients` attribute selects explicit interfaces instead of scanning;
+`basePackages` and `basePackageClasses` customize the scan location.
+
+[source,java]
+----
+@Configuration
+@EnableFeignClients(clients = InventoryClient.class)
+class ClientConfiguration {
+}
+
+@FeignClient(name = "inventory", contextId = "inventoryRead",
+        url = "${inventory.url}", configuration = InventoryReadConfiguration.class)
+interface InventoryClient {
+
+    @GetMapping("/items/{id}")
+    String get(@PathVariable("id") String id);
+}
+----
+
+Supply `inventory.url` through the Spring `Environment`, for example with
+`@PropertySource` or a programmatically registered property source. The target
+must be an absolute HTTP or HTTPS URL. The optional `path` attribute adds a
+common path prefix. No service discovery or load balancing is performed.
+
+== Client Identity and Isolation
+
+`name` (aliased by `value`) identifies the service. `contextId` identifies its
+configuration context and falls back to `name` when omitted. Multiple clients
+can use the same service name with distinct context identifiers.
+
+`NamedContextFactory` lazily creates each client context. The context hierarchy is:
+
+* The main application context.
+* A per-client context containing `@EnableFeignClients.defaultConfiguration`.
+* A client context containing `@FeignClient.configuration`.
+
+For scalar Feign components, a bean in the client context takes precedence over
+one in the default context, which takes precedence over one in the application
+context. This applies by type as well as by bean name. Multiple local candidates
+follow ordinary Spring selection rules, including `@Primary`.
+
+`inheritParentConfiguration = false` removes the main application context from
+that client's hierarchy. Common default configuration and application environment
+properties remain available. Client configurations should be kept outside the
+application's component scan to preserve their isolation.
+
+Registrations sharing a `contextId` must declare identical configuration classes
+in the same order and the same inheritance setting; conflicting specifications
+fail during registration. Client beans use the fully qualified interface name,
+with a default alias of `contextId + "FeignClient"`. Set `qualifiers` to provide
+explicit aliases, particularly when multiple interfaces share a context.
+`primary` defaults to `true`.
+
+Closing the main context closes all client contexts and their default contexts.
+
+== Contracts, Conversion, and Extension Points
+
+The default `SpringMvcContract` supports `@RequestMapping` and composed mappings
+such as `@GetMapping` and `@PostMapping`. Parameters may use `@PathVariable`,
+`@RequestParam`, `@RequestHeader`, `@CookieValue`, and `@RequestBody`.
+Query and header maps are supported. Declare parameter names explicitly or
+compile interfaces with `-parameters`.
+
+Each mapping supports one path and one HTTP method, with GET as the default.
+Static mapping headers and parameters require `name=value` syntax. Multipart
+parameter annotations and matrix variables are not supported by this contract;
+unsupported MVC parameter annotations are rejected when the proxy is created.
+
+`HttpMessageConverterCodec` provides the default `Encoder` and `Decoder` using
+Spring's client message converters. JSON support requires a compatible JSON
+library on the application classpath. Generic response types are preserved.
+Register a codec constructed with an explicit converter list to customize
+conversion, or declare separate Feign `Encoder` and `Decoder` beans.
+
+Other supported configuration beans include `Contract`, `Client`,
+`Request.Options`, `Retryer`, `ErrorDecoder`, `Logger`, `Logger.Level`,
+`RequestInterceptor`, `Capability`, and `Feign.Builder`.
+Interceptors from the context hierarchy are combined by bean name and sorted
+using Spring ordering conventions. Declare a custom `Feign.Builder` with
+prototype scope so mutable builders are not shared between client proxies.
+The default retry policy is `Retryer.NEVER_RETRY`.
+
+This module does not provide Boot property binding, dynamic refresh, fallback,
+circuit breakers, or AOT support.

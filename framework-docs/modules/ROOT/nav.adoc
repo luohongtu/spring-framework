@@ -416,6 +416,7 @@
 *** xref:testing/resources.adoc[]
 * xref:integration.adoc[]
 ** xref:integration/rest-clients.adoc[]
+** xref:integration/openfeign.adoc[]
 ** xref:integration/jms.adoc[]
 *** xref:integration/jms/using.adoc[]
 *** xref:integration/jms/sending.adoc[]

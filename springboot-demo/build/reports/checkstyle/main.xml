@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="9.3">
+<file name="/Users/lht/Documents/project/github/spring-framework/springboot-demo/src/main/java/org/springframework/samples/openfeign/demo/web/DemoController.java">
+</file>
+<file name="/Users/lht/Documents/project/github/spring-framework/springboot-demo/src/main/java/org/springframework/samples/openfeign/demo/web/InventoryController.java">
+</file>
+<file name="/Users/lht/Documents/project/github/spring-framework/springboot-demo/src/main/java/org/springframework/samples/openfeign/demo/web/package-info.java">
+</file>
+<file name="/Users/lht/Documents/project/github/spring-framework/springboot-demo/src/main/java/org/springframework/samples/openfeign/demo/OpenFeignDemoApplication.java">
+</file>
+<file name="/Users/lht/Documents/project/github/spring-framework/springboot-demo/src/main/java/org/springframework/samples/openfeign/demo/package-info.java">
+</file>
+<file name="/Users/lht/Documents/project/github/spring-framework/springboot-demo/src/main/java/org/springframework/samples/openfeign/configuration/WriteClientConfiguration.java">
+</file>
+<file name="/Users/lht/Documents/project/github/spring-framework/springboot-demo/src/main/java/org/springframework/samples/openfeign/configuration/ReadClientConfiguration.java">
+</file>
+<file name="/Users/lht/Documents/project/github/spring-framework/springboot-demo/src/main/java/org/springframework/samples/openfeign/configuration/package-info.java">
+</file>
+<file name="/Users/lht/Documents/project/github/spring-framework/springboot-demo/src/main/java/org/springframework/samples/openfeign/model/MessageReceipt.java">
+</file>
+<file name="/Users/lht/Documents/project/github/spring-framework/springboot-demo/src/main/java/org/springframework/samples/openfeign/model/Greeting.java">
+</file>
+<file name="/Users/lht/Documents/project/github/spring-framework/springboot-demo/src/main/java/org/springframework/samples/openfeign/model/MessageRequest.java">
+</file>
+<file name="/Users/lht/Documents/project/github/spring-framework/springboot-demo/src/main/java/org/springframework/samples/openfeign/model/package-info.java">
+</file>
+<file name="/Users/lht/Documents/project/github/spring-framework/springboot-demo/src/main/java/org/springframework/samples/openfeign/client/WriteInventoryClient.java">
+</file>
+<file name="/Users/lht/Documents/project/github/spring-framework/springboot-demo/src/main/java/org/springframework/samples/openfeign/client/ReadInventoryClient.java">
+</file>
+<file name="/Users/lht/Documents/project/github/spring-framework/springboot-demo/src/main/java/org/springframework/samples/openfeign/client/package-info.java">
+</file>
+</checkstyle>

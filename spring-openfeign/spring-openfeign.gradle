@@ -1,0 +1,8 @@
+description = "Spring OpenFeign Integration"
+
+dependencies {
+	api(project(":spring-context"))
+	api(project(":spring-web"))
+	api("io.github.openfeign:feign-core:13.6")
+	testImplementation("tools.jackson.core:jackson-databind")
+}

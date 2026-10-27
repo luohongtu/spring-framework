@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.springframework.samples.openfeign.tests.OpenFeignDemoTests" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-11-18T07:28:21.967Z" hostname="apples-MacBook-Pro.local" time="1.769">
+  <properties/>
+  <testcase name="clientConfigurationDoesNotLeakIntoMainContext()" classname="org.springframework.samples.openfeign.tests.OpenFeignDemoTests" time="0.036"/>
+  <testcase name="downstreamNotFoundBecomesFeignException()" classname="org.springframework.samples.openfeign.tests.OpenFeignDemoTests" time="0.069"/>
+  <testcase name="sameServiceNameHasIsolatedContextConfigurations()" classname="org.springframework.samples.openfeign.tests.OpenFeignDemoTests" time="0.135"/>
+  <testcase name="postConvertsJsonRequestAndResponse()" classname="org.springframework.samples.openfeign.tests.OpenFeignDemoTests" time="0.014"/>
+  <testcase name="demoTranslatesDownstreamErrorToBadGateway()" classname="org.springframework.samples.openfeign.tests.OpenFeignDemoTests" time="0.008"/>
+  <testcase name="getPassesPathAndQueryParameters()" classname="org.springframework.samples.openfeign.tests.OpenFeignDemoTests" time="0.005"/>
+  <system-out><![CDATA[
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.0)
+
+2026-11-18T15:28:22.443+08:00  INFO 8711 --- [spring-openfeign-demo] [    Test worker] w.o.g.p.i.w.GradleWorkerMain             : Starting GradleWorkerMain using Java 25.0.5 with PID 8711 (started by lht in /Users/lht/Documents/project/github/spring-framework/springboot-demo)
+2026-11-18T15:28:22.463+08:00  INFO 8711 --- [spring-openfeign-demo] [    Test worker] w.o.g.p.i.w.GradleWorkerMain             : No active profile set, falling back to 1 default profile: "default"
+2026-11-18T15:28:23.032+08:00  INFO 8711 --- [spring-openfeign-demo] [    Test worker] o.s.b.t.TomcatWebServer                  : Tomcat initialized with port 0 (http)
+2026-11-18T15:28:23.043+08:00  INFO 8711 --- [spring-openfeign-demo] [    Test worker] o.a.c.c.StandardService                  : Starting service [Tomcat]
+2026-11-18T15:28:23.044+08:00  INFO 8711 --- [spring-openfeign-demo] [    Test worker] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/11.0.27]
+2026-11-18T15:28:23.069+08:00  INFO 8711 --- [spring-openfeign-demo] [    Test worker] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 571 ms
+2026-11-18T15:28:23.231+08:00  INFO 8711 --- [spring-openfeign-demo] [    Test worker] o.s.b.t.TomcatWebServer                  : Tomcat started on port 56289 (http) with context path '/'
+2026-11-18T15:28:23.234+08:00  INFO 8711 --- [spring-openfeign-demo] [    Test worker] w.o.g.p.i.w.GradleWorkerMain             : Started GradleWorkerMain in 1.095 seconds (process running for 1.783)
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.0)
+
+2026-11-18T15:28:23.245+08:00  INFO 8711 --- [spring-openfeign-demo] [    Test worker] w.o.g.p.i.w.GradleWorkerMain             : Starting GradleWorkerMain using Java 25.0.5 with PID 8711 (started by lht in /Users/lht/Documents/project/github/spring-framework/springboot-demo)
+2026-11-18T15:28:23.245+08:00  INFO 8711 --- [spring-openfeign-demo] [    Test worker] w.o.g.p.i.w.GradleWorkerMain             : No active profile set, falling back to 1 default profile: "default"
+2026-11-18T15:28:23.319+08:00  INFO 8711 --- [spring-openfeign-demo] [    Test worker] o.s.b.t.TomcatWebServer                  : Tomcat initialized with port 0 (http)
+2026-11-18T15:28:23.320+08:00  INFO 8711 --- [spring-openfeign-demo] [    Test worker] o.a.c.c.StandardService                  : Starting service [Tomcat]
+2026-11-18T15:28:23.320+08:00  INFO 8711 --- [spring-openfeign-demo] [    Test worker] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/11.0.27]
+2026-11-18T15:28:23.326+08:00  INFO 8711 --- [spring-openfeign-demo] [    Test worker] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 75 ms
+2026-11-18T15:28:23.381+08:00  INFO 8711 --- [spring-openfeign-demo] [    Test worker] o.s.b.t.TomcatWebServer                  : Tomcat started on port 56298 (http) with context path '/'
+2026-11-18T15:28:23.382+08:00  INFO 8711 --- [spring-openfeign-demo] [    Test worker] w.o.g.p.i.w.GradleWorkerMain             : Started GradleWorkerMain in 0.146 seconds (process running for 1.931)
+2026-11-18T15:28:23.536+08:00  INFO 8711 --- [spring-openfeign-demo] [1-auto-1-exec-1] o.a.c.c.C.[.[.[/]                        : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-11-18T15:28:23.536+08:00  INFO 8711 --- [spring-openfeign-demo] [1-auto-1-exec-1] o.s.w.s.DispatcherServlet                : Initializing Servlet 'dispatcherServlet'
+2026-11-18T15:28:23.537+08:00  INFO 8711 --- [spring-openfeign-demo] [1-auto-1-exec-1] o.s.w.s.DispatcherServlet                : Completed initialization in 1 ms
+2026-11-18T15:28:23.626+08:00  INFO 8711 --- [spring-openfeign-demo] [1-auto-2-exec-1] o.a.c.c.C.[.[.[/]                        : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-11-18T15:28:23.626+08:00  INFO 8711 --- [spring-openfeign-demo] [1-auto-2-exec-1] o.s.w.s.DispatcherServlet                : Initializing Servlet 'dispatcherServlet'
+2026-11-18T15:28:23.629+08:00  INFO 8711 --- [spring-openfeign-demo] [1-auto-2-exec-1] o.s.w.s.DispatcherServlet                : Completed initialization in 2 ms
+2026-11-18T15:28:23.739+08:00  INFO 8711 --- [spring-openfeign-demo] [    Test worker] o.s.b.t.GracefulShutdown                 : Commencing graceful shutdown. Waiting for active requests to complete
+2026-11-18T15:28:23.741+08:00  INFO 8711 --- [spring-openfeign-demo] [tomcat-shutdown] o.s.b.t.GracefulShutdown                 : Graceful shutdown complete
+2026-11-18T15:28:23.748+08:00  INFO 8711 --- [spring-openfeign-demo] [    Test worker] o.s.b.t.GracefulShutdown                 : Commencing graceful shutdown. Waiting for active requests to complete
+2026-11-18T15:28:23.749+08:00  INFO 8711 --- [spring-openfeign-demo] [tomcat-shutdown] o.s.b.t.GracefulShutdown                 : Graceful shutdown complete
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

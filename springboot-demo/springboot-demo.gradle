@@ -1,0 +1,27 @@
+plugins {
+	id 'application'
+}
+
+description = "Spring OpenFeign Spring Boot Demo"
+
+application {
+	mainClass = "org.springframework.samples.openfeign.demo.OpenFeignDemoApplication"
+}
+
+// Always exercise this checkout, including Framework dependencies pulled in by Boot.
+configurations.configureEach {
+	resolutionStrategy.dependencySubstitution {
+		rootProject.moduleProjects.each { moduleProject ->
+			substitute module("org.springframework:${moduleProject.name}") using project(moduleProject.path)
+		}
+	}
+}
+
+dependencies {
+	implementation(project(":spring-openfeign"))
+	implementation(project(":spring-webmvc"))
+	implementation("org.springframework.boot:spring-boot-starter-webmvc:4.0.0") {
+		exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+	}
+	implementation("org.springframework.boot:spring-boot-starter-log4j2:4.0.0")
+}

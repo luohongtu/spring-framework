@@ -26,6 +26,15 @@ import java.util.function.Consumer;
 import org.jspecify.annotations.Nullable;
 
 /**
+ * 使用业务情况： 主从配置， 一个全局的配置，一个当前配置
+ * 组合 Map，用于合并另外两个 Map。
+ * <p>该类型通过 {@link CollectionUtils#compositeMap(Map, Map, BiFunction, Consumer)} 方法创建。
+ *
+ * @param <K> 此 Map 维护的键的类型
+ * @param <V> 映射值的类型
+ * @since 6.2
+ * @author Arjen Poutsma, Yanming Zhou
+ *
  * Composite map that combines two other maps.
  *
  * <p>This type is created via
